@@ -332,210 +332,41 @@
             });            
         };
     };
-  
+
     var googleMap = function() {
         if ( $().gmap3 ) {
             $("#flat-map").gmap3({
-                map:{
+                marker:{
+                    values:[
+                        {latLng:[1.3266, 103.8528], data:"<strong>Wheeler's Yard 28 <br> Lor Ampas <br> Singapore 328781</strong>"},
+                        {options:{icon: "http://maps.google.com/mapfiles/marker_green.png"}}
+                    ],
                     options:{
-                        mapTypeControl:false,
-                        zoomControl:false,
-                        zoom: 11,
-                        mapTypeId: 'arch_style',
-                        mapTypeControlOptions: {
-                            mapTypeIds: ['arch_style', google.maps.MapTypeId.SATELLITE, google.maps.MapTypeId.HYBRID]
-                        },
-                        scrollwheel: false
-                    }
-                },
-                getlatlng:{
-                    address:  "312004 singapore",
-                    callback: function(results) {
-                        if ( !results ) return;
-                        $(this).gmap3('get').setCenter(new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()));
-                        $(this).gmap3({
-                            marker:{
-                                latLng:results[0].geometry.location,
-                                options:{
-                                    visible:false,
-                                    icon: 'http://themesflat.com/html/arch/images/icon/marker.png'
+                        draggable: false
+                    },
+                    events:{
+                        click: function(marker, event, context){
+                        var map = $(this).gmap3("get"),
+                            infowindow = $(this).gmap3({get:{name:"infowindow"}});
+                        if (infowindow){
+                            infowindow.open(map, marker);
+                            infowindow.setContent(context.data);
+                        } else {
+                            $(this).gmap3({
+                                infowindow:{
+                                    anchor:marker, 
+                                    options:{content: context.data}
                                 }
-                            }
-                        });
+                            });
+                        }
+                      },
                     }
-                },
-                styledmaptype:{
-                    id: "arch_style",
-                    options:{
-                        name: "Arch Map"
-                    }, 
-                    styles: [
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.text.fill",
-                                "stylers": [
-                                    {
-                                        "saturation": 36
-                                    },
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 40
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.text.stroke",
-                                "stylers": [
-                                    {
-                                        "visibility": "on"
-                                    },
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 16
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "all",
-                                "elementType": "labels.icon",
-                                "stylers": [
-                                    {
-                                        "visibility": "off"
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "administrative",
-                                "elementType": "geometry.fill",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 20
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "administrative",
-                                "elementType": "geometry.stroke",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 17
-                                    },
-                                    {
-                                        "weight": 1.2
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "landscape",
-                                "elementType": "geometry",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 20
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "poi",
-                                "elementType": "geometry",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 21
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "road.highway",
-                                "elementType": "geometry.fill",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 17
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "road.highway",
-                                "elementType": "geometry.stroke",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 29
-                                    },
-                                    {
-                                        "weight": 0.2
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "road.arterial",
-                                "elementType": "geometry",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 18
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "road.local",
-                                "elementType": "geometry",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 16
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "transit",
-                                "elementType": "geometry",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 19
-                                    }
-                                ]
-                            },
-                            {
-                                "featureType": "water",
-                                "elementType": "geometry",
-                                "stylers": [
-                                    {
-                                        "color": "#000000"
-                                    },
-                                    {
-                                        "lightness": 17
-                                    }
-                                ]
-                            }
-                        ]
+                  },              
+                map:{
+                  options: {
+                    zoom: 15,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                  }
                 },
             });
         }
